@@ -11,6 +11,7 @@ public class Crime {
     String title;
     Date date;
     boolean solved;
+    int requiresPolice;
 
     public Crime() {
         id = UUID.randomUUID();

@@ -10,7 +10,7 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.CriminalIntent">
         <activity
-                android:name=".activity.CrimeListActivity"
+                android:name=".activity.CrimeActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.CrimeActivity"/>
     </application>
 
 </manifest>

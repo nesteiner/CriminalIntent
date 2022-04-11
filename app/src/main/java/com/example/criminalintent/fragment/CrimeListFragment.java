@@ -5,23 +5,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.criminalintent.R;
 import com.example.criminalintent.adapter.CrimeAdapter;
 import com.example.criminalintent.model.Crime;
-import com.example.criminalintent.model.CrimeLab;
+import com.example.criminalintent.model.CrimeListview;
 
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
     RecyclerView crimeRecyclerView;
     CrimeAdapter adapter;
+    CrimeListview crimeListview;
 
     @Nullable
     @Override
@@ -34,12 +34,15 @@ public class CrimeListFragment extends Fragment {
     }
 
     void updateUI() {
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
-        List<Crime> crimes = crimeLab.getCrimes();
+        CrimeListview listview = new CrimeListview();
+        List<Crime> crimes = listview.getCrimes();
 
         Log.d("Hello: ",  String.valueOf(crimes.size()));
         adapter = new CrimeAdapter(crimes);
         crimeRecyclerView.setAdapter(adapter);
     }
 
+    public static CrimeListFragment getInstance() {
+        return new CrimeListFragment();
+    }
 }

@@ -32,6 +32,23 @@ public class CrimeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_crime, container, false);
         titleField = view.findViewById(R.id.crime_title);
+
+        dateButton = view.findViewById(R.id.crime_date);
+        dateButton.setTag(crime.getDate().toString());
+        dateButton.setEnabled(false);
+
+        solvedCheckbox = view.findViewById(R.id.crime_solved);
+        solvedCheckbox.setOnCheckedChangeListener((buttonview, isChecked) -> {
+            crime.setSolved(isChecked);
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         titleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -48,16 +65,5 @@ public class CrimeFragment extends Fragment {
 
             }
         });
-
-        dateButton = view.findViewById(R.id.crime_date);
-        dateButton.setTag(crime.getDate().toString());
-        dateButton.setEnabled(false);
-
-        solvedCheckbox = view.findViewById(R.id.crime_solved);
-        solvedCheckbox.setOnCheckedChangeListener((buttonview, isChecked) -> {
-            crime.setSolved(isChecked);
-        });
-
-        return view;
     }
 }
