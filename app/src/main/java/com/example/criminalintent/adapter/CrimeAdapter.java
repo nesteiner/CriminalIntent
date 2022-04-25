@@ -1,6 +1,7 @@
 package com.example.criminalintent.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +23,16 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeViewHolder> {
     @Override
     public CrimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View inflateView = inflater.inflate(R.layout.list_item_crime, parent, false);
-        return new CrimeViewHolder(inflateView);
+        final View view = inflater.inflate(R.layout.list_item_crime, parent, false);
+        return new CrimeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CrimeViewHolder holder, int position) {
         Crime crime = crimes.get(position);
         holder.bind(crime);
+
+        Log.d("on Bind ViewHolder", crime.toString());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.criminalintent.model;
 
+import android.util.Log;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -12,7 +13,8 @@ public class CrimeListview {
 
     public CrimeListview() {
         crimes = new ArrayList<>();
-        Stream.iterate(1, n -> n + 1).limit(100)
+        Stream.iterate(1, n -> n + 1)
+                .limit(100)
                 .forEach(i -> {
                     Crime crime = new Crime();
                     crime.setTitle("第" + i + "号违纪");
