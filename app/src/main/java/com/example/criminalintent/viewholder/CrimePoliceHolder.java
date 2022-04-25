@@ -1,46 +1,51 @@
 package com.example.criminalintent.viewholder;
 
-import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.criminalintent.R;
-import com.example.criminalintent.activity.CrimeActivity;
-import com.example.criminalintent.activity.CrimeListActivity;
 import com.example.criminalintent.model.Crime;
 import lombok.NonNull;
 
-public class CrimeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    Crime crime;
+public class CrimePoliceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     TextView titleTextView;
     TextView dateTextView;
+    Button policeButton;
     ImageView solvedImageView;
+    Crime crime;
 
-    public CrimeViewHolder(@NonNull View itemView) {
+    @Override
+    public void onClick(View view) {
+        Toast.makeText(itemView.getContext(), crime.getTitle() + "被点击!", Toast.LENGTH_LONG).show();
+    }
+
+    public CrimePoliceHolder(@NonNull View itemView) {
         super(itemView);
         itemView.setOnClickListener(this::onClick);
+
         titleTextView = itemView.findViewById(R.id.crime_title);
         dateTextView = itemView.findViewById(R.id.crime_date);
+        policeButton = itemView.findViewById(R.id.require_police);
         solvedImageView = itemView.findViewById(R.id.crime_solved);
+        policeButton.setOnClickListener(view -> {
+            Toast.makeText(itemView.getContext(), "该违纪已发给警察去处理!",
+                    Toast.LENGTH_SHORT).show();
+        });
     }
 
     public void bind(Crime crime) {
         this.crime = crime;
         titleTextView.setText(crime.getTitle());
         dateTextView.setText(crime.getDate().toString());
-
         if(crime.isSolved()) {
-            solvedImageView.setVisibility(View.GONE);
+            policeButton.setEnabled(false);
+            solvedImageView.setVisibility(View.INVISIBLE);
         } else {
+            policeButton.setEnabled(true);
             solvedImageView.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-        // Toast.makeText(itemView.getContext(), crime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
-        Intent intent = CrimeActivity.newIntent(itemView.getContext(), crime.getId());
-        itemView.getContext().startActivity(intent);
     }
 }

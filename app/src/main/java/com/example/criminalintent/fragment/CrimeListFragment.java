@@ -33,13 +33,22 @@ public class CrimeListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     void updateUI() {
         CrimeListview listview = new CrimeListview();
         List<Crime> crimes = listview.getCrimes();
 
-        Log.d("Hello: ",  String.valueOf(crimes.size()));
-        adapter = new CrimeAdapter(crimes);
-        crimeRecyclerView.setAdapter(adapter);
+        if(adapter == null) {
+            adapter = new CrimeAdapter(crimes);
+            crimeRecyclerView.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public static CrimeListFragment getInstance() {

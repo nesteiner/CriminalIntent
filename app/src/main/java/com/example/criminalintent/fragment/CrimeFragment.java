@@ -15,11 +15,23 @@ import androidx.fragment.app.Fragment;
 import com.example.criminalintent.R;
 import com.example.criminalintent.model.Crime;
 
+import java.util.UUID;
+
 public class CrimeFragment extends Fragment {
+    static final String ARG_CRIME_ID = "crime_id";
+
     Crime crime;
     EditText titleField;
     Button dateButton;
     CheckBox solvedCheckbox;
+
+    public static CrimeFragment getInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, crimeId);
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,23 +44,7 @@ public class CrimeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_crime, container, false);
         titleField = view.findViewById(R.id.crime_title);
-
-        dateButton = view.findViewById(R.id.crime_date);
-        dateButton.setTag(crime.getDate().toString());
-        dateButton.setEnabled(false);
-
-        solvedCheckbox = view.findViewById(R.id.crime_solved);
-        solvedCheckbox.setOnCheckedChangeListener((buttonview, isChecked) -> {
-            crime.setSolved(isChecked);
-        });
-
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
+        titleField.setText(crime.getTitle());
         titleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -65,5 +61,16 @@ public class CrimeFragment extends Fragment {
 
             }
         });
+        dateButton = view.findViewById(R.id.crime_date);
+        dateButton.setTag(crime.getDate().toString());
+        dateButton.setEnabled(false);
+
+        solvedCheckbox = view.findViewById(R.id.crime_solved);
+        solvedCheckbox.setChecked(crime.isSolved());
+        solvedCheckbox.setOnCheckedChangeListener((buttonview, isChecked) -> {
+            crime.setSolved(isChecked);
+        });
+
+        return view;
     }
 }

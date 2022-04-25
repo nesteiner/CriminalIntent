@@ -9,11 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.criminalintent.R;
 import com.example.criminalintent.model.Crime;
+import com.example.criminalintent.viewholder.CrimePoliceHolder;
 import com.example.criminalintent.viewholder.CrimeViewHolder;
 
 import java.util.List;
 
-public class CrimeAdapter extends RecyclerView.Adapter<CrimeViewHolder> {
+public class CrimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Crime> crimes;
     public CrimeAdapter(List<Crime> crimes) {
         this.crimes = crimes;
@@ -21,22 +22,37 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeViewHolder> {
 
     @NonNull
     @Override
-    public CrimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View view = inflater.inflate(R.layout.list_item_crime, parent, false);
-        return new CrimeViewHolder(view);
+
+        if(viewType == 1) {
+            final View view = inflater.inflate(R.layout.list_item_crime_police, parent, false);
+            return new CrimePoliceHolder(view);
+        } else {
+            final View view = inflater.inflate(R.layout.list_item_crime, parent, false);
+            return new CrimeViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CrimeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Crime crime = crimes.get(position);
-        holder.bind(crime);
-
-        Log.d("on Bind ViewHolder", crime.toString());
+        if(holder instanceof CrimeViewHolder) {
+            CrimeViewHolder _holder = (CrimeViewHolder) holder;
+            _holder.bind(crime);
+        } else {
+            CrimePoliceHolder _holder = (CrimePoliceHolder) holder;
+            _holder.bind(crime);
+        }
     }
 
     @Override
     public int getItemCount() {
         return crimes.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return crimes.get(position).getRequiresPolice();
     }
 }
