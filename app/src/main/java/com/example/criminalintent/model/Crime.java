@@ -1,13 +1,17 @@
 package com.example.criminalintent.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Data
+@Entity
 public class Crime {
-    UUID id;
+    @PrimaryKey @NonNull UUID id;
     String title;
     Date date;
     boolean solved;

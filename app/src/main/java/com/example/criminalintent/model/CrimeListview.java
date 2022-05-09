@@ -1,6 +1,9 @@
 package com.example.criminalintent.model;
 
 import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import com.example.criminalintent.repository.CrimeRepository;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -8,11 +11,13 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Data
-public class CrimeListview {
-    List<Crime> crimes;
+public class CrimeListview extends ViewModel {
+    LiveData<List<Crime>> crimes;
+    CrimeRepository crimeRepository;
+    public CrimeListview() {}
 
-    public CrimeListview() {
-        crimes = new ArrayList<>();
+    public void initDatabase(CrimeRepository crimeRepository) {
+        this.crimeRepository = crimeRepository;
         Stream.iterate(1, n -> n + 1)
                 .limit(100)
                 .forEach(i -> {
@@ -26,7 +31,13 @@ public class CrimeListview {
                         crime.setRequiresPolice(0);
                     }
 
-                    crimes.add(crime);
+                    crimeRepository.insertOne(crime);
                 });
+    }
+
+    public LiveData<List<Crime>> getCrimes(CrimeRepository crimeRepository) {
+        this.crimeRepository = crimeRepository;
+        crimes = this.crimeRepository.findAll();
+        return crimes;
     }
 }
