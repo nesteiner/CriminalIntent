@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.criminalintent.R;
 import com.example.criminalintent.model.Crime;
+import com.example.criminalintent.util.CrimeSelectedCallback;
 import lombok.NonNull;
 
 public class CrimePoliceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -16,14 +17,15 @@ public class CrimePoliceHolder extends RecyclerView.ViewHolder implements View.O
     Button policeButton;
     ImageView solvedImageView;
     Crime crime;
-
+    CrimeSelectedCallback callback;
     @Override
     public void onClick(View view) {
-        Toast.makeText(itemView.getContext(), crime.getTitle() + "被点击!", Toast.LENGTH_LONG).show();
+        callback.onCrimeSelected(crime.getId());
     }
 
-    public CrimePoliceHolder(@NonNull View itemView) {
+    public CrimePoliceHolder(@NonNull View itemView, CrimeSelectedCallback callback) {
         super(itemView);
+        this.callback = callback;
         itemView.setOnClickListener(this::onClick);
 
         titleTextView = itemView.findViewById(R.id.crime_title);

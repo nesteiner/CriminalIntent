@@ -9,6 +9,7 @@ import com.example.criminalintent.R;
 import com.example.criminalintent.activity.CrimeActivity;
 import com.example.criminalintent.activity.CrimeListActivity;
 import com.example.criminalintent.model.Crime;
+import com.example.criminalintent.util.CrimeSelectedCallback;
 import lombok.NonNull;
 
 public class CrimeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -16,9 +17,10 @@ public class CrimeViewHolder extends RecyclerView.ViewHolder implements View.OnC
     TextView titleTextView;
     TextView dateTextView;
     ImageView solvedImageView;
-
-    public CrimeViewHolder(@NonNull View itemView) {
+    CrimeSelectedCallback callback;
+    public CrimeViewHolder(@NonNull View itemView, CrimeSelectedCallback callback) {
         super(itemView);
+        this.callback = callback;
         itemView.setOnClickListener(this::onClick);
         titleTextView = itemView.findViewById(R.id.crime_title);
         dateTextView = itemView.findViewById(R.id.crime_date);
@@ -39,8 +41,8 @@ public class CrimeViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public void onClick(View view) {
-        // Toast.makeText(itemView.getContext(), crime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
-        Intent intent = CrimeActivity.newIntent(itemView.getContext(), crime.getId());
-        itemView.getContext().startActivity(intent);
+        callback.onCrimeSelected(crime.getId());
+//        Intent intent = CrimeActivity.newIntent(itemView.getContext(), crime.getId());
+//        itemView.getContext().startActivity(intent);
     }
 }

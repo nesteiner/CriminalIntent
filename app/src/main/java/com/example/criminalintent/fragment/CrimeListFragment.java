@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import com.example.criminalintent.adapter.CrimeAdapter;
 import com.example.criminalintent.model.Crime;
 import com.example.criminalintent.model.CrimeListview;
 import com.example.criminalintent.repository.CrimeRepository;
+import com.example.criminalintent.util.CrimeSelectedCallback;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +29,19 @@ public class CrimeListFragment extends Fragment {
     RecyclerView crimeRecyclerView;
     CrimeAdapter adapter;
     CrimeListview crimeListview;
+    CrimeSelectedCallback callback;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        callback = (CrimeSelectedCallback) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +57,7 @@ public class CrimeListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
         crimeRecyclerView = view.findViewById(R.id.crime_recycler_view);
         crimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,7 +82,7 @@ public class CrimeListFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), new Observer<List<Crime>>() {
                     @Override
                     public void onChanged(List<Crime> crimes) {
-                        adapter = new CrimeAdapter(crimes);
+                        adapter = new CrimeAdapter(crimes, callback);
                         crimeRecyclerView.setAdapter(adapter);
                     }
                 });

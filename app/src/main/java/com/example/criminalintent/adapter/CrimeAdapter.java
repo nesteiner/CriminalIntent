@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.criminalintent.R;
 import com.example.criminalintent.model.Crime;
+import com.example.criminalintent.util.CrimeSelectedCallback;
 import com.example.criminalintent.viewholder.CrimePoliceHolder;
 import com.example.criminalintent.viewholder.CrimeViewHolder;
 
@@ -16,8 +17,10 @@ import java.util.List;
 
 public class CrimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Crime> crimes;
-    public CrimeAdapter(List<Crime> crimes) {
+    CrimeSelectedCallback callback;
+    public CrimeAdapter(List<Crime> crimes, CrimeSelectedCallback callback) {
         this.crimes = crimes;
+        this.callback = callback;
     }
 
     @NonNull
@@ -27,10 +30,10 @@ public class CrimeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         if(viewType == 1) {
             final View view = inflater.inflate(R.layout.list_item_crime_police, parent, false);
-            return new CrimePoliceHolder(view);
+            return new CrimePoliceHolder(view, callback);
         } else {
             final View view = inflater.inflate(R.layout.list_item_crime, parent, false);
-            return new CrimeViewHolder(view);
+            return new CrimeViewHolder(view, callback);
         }
     }
 
